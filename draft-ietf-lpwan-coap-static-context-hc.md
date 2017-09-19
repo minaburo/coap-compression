@@ -38,14 +38,14 @@ normative:
 
 --- abstract
 
-This draft defines the way SCHC header compression can be applied to CoAP 
-headers.
+This document defines the way SCHC header compression can be used to compress the CoAP 
+headers fields together with the SCHC compression of IPv6 and UDP headers in order to be used with the LPWAN networks.
 CoAP header structure differs from IPv6 and UDP protocols since the CoAP Header 
-is flexible header with a variable number of options themself of a variable length. 
+is a flexible header with a variable number of options themself with a variable length. 
 Another important difference is 
 the asymmetry in the header information used for request and 
 response messages. This draft takes into account the fact that a thing can play the
-role of a CoAP client, a CoAP client or both roles.
+role of a CoAP client, a CoAP server or both roles.
 
 --- middle
 
@@ -87,7 +87,7 @@ Nevertheless, if limited, the size of a CoAP header may be
 * IPv6 and UDP are symmetrical protocols. The same fields are found in the
   request and in
   the response, only location in the header may vary (e.g. source and destination
-  fields). A CoAP request is different from  an response. For example, the URI-path
+  fields). A CoAP request is different from  a response. For example, the URI-path
   option is mandatory in the request and is not found in the response, request may contain
   an Accept option and the response a Content-format option.
   
@@ -99,23 +99,23 @@ Nevertheless, if limited, the size of a CoAP header may be
 
 * CoAP also obeys to the client/server paradigm and the compression rate can
   be different if the request is issued from a LPWAN node or from an non LPWAN
-  device. For instance a Thing (ES) aware of LPWAN constraints can generate a 1 byte token, but
+  device. For instance a Device (Dev) aware of LPWAN constraints can generate a 1 byte token, but
   a regular CoAP client will certainly send a larger token to the Thing. SCHC compression
   will not modify the values to offer a better compression rate. Nevertheless a proxy placed
   before the compressor may change some field values to offer a better compression rate and 
-  maintain the necessary context for interoperability with existing CoAP implementations.
+  to maintain the necessary context for interoperability with existing CoAP implementations.
 
 * In IPv6 and UDP header fields have a fixed size. In CoAP, Token size
   may vary from 0 to 8 bytes, length is given by a field in the header. More
-  systematically, the CoAP options are described using the Type-Length-Value. 
-  When applying SCHC header compression.
+  systematically, when applying SCHC header compression, the CoAP options are described using the Type-Length-Value. 
+  
   
   By sending compressed field information following the rule order, SCHC offers a 
   serialization/deserialization mechanism. Since a field exists to indicate the token
   length there is no ambiguity. For options, the rule indicates also the expected options
   found the int CoAP header. Therefore only the length is needed to recognise an option. 
-  The length will be send using the same CoAP encoding (size less than 12 are directly sent, 
-  higher values uses the escape mechanisms defined by {{rfc7252}}). Delta Type is omitted, 
+  The length will be sent using the same CoAP encoding (size less than 12 are directly sent, 
+  higher values use the escape mechanisms defined by {{rfc7252}}). Delta Type is omitted, 
   the value will
   be recovered by the decompressor. This reduce the option length of 4, 12 or 20 bits regarding
   the orignial size of the delta type encoding in the option.
@@ -148,7 +148,7 @@ A LPWAN node can either be a client or a server and sometimes both.
 
 
 
-Note that acknowledgement can be optimized and a REST level acknowledgement
+Note that acknowledgements can be optimized and a REST level acknowledgement
 can be used as a transport level acknowledgement.
 
 A rule includes also a Direction
@@ -163,7 +163,7 @@ A rule includes also a Direction
 
 CoAP header format defines the following fields:
 
-* version (2 bits): 
+* version (2 bits): It defines the CoAP version. It is set to 1 (01 binary) so it can be included in the Rule and elided.
 
 * type (2 bits). It defines the type of the transport messages, 4
       values are defined, regarding the type of exchange. 
